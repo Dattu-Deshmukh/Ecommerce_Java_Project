@@ -1,0 +1,68 @@
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-group-custom {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 576px) {
+    .btn-group-custom {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.hero {
+    background: url('https://images.unsplash.com/photo-1583922606661-0822ed0bd916?q=80&w=1977&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat;
+    /* filter: brightness(80%); */
+    color: white;
+    padding: 6rem 1rem;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
+}
+
+.feature-icon {
+    font-size: 2rem;
+    color: #0d6efd;
+}
+
+.nav-link {
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    font-weight: bolder;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+
+.profile-card {
+    max-width: 600px;
+    margin: 3rem auto;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.profile-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+}

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Your custom stylesheet -->
+    <link th:href="@{/style.css}" rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/home}">Merchant</a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" th:href="@{/home}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" th:href="@{/shop}">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" th:href="@{/sell}">Sell</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" th:href="@{/myorders}">Orders</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" th:href="@{/profile}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" th:href="@{/login}">Logout</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" th:href="@{/help}">Help</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="p-5 mb-5 text-center">
+        <div class="container">
+            <h1 class="fw-bold display-4">Welcome to MyShop!</h1>
+            <p class="lead">Get the best deals on top products. Shop smart, save more!</p>
+            <a th:href="@{/signup}" class="btn btn-lg btn-primary mt-4">Create Your Free Account</a>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-4">Why Choose MyShop?</h2>
+            <div class="row text-center align-items-center justify-content-center">
+                <div class="col-md-4 mb-4">
+                    <div class="bg-white rounded p-4 h-100 shadow-sm">
+                        <div class="mb-3 fs-1">🚚</div>
+                        <h5>Free &amp; Fast Delivery</h5>
+                        <p>Get your products delivered at lightning speed with zero delivery charges.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="bg-white rounded p-4 h-100 shadow-sm">
+                        <div class="mb-3 fs-1">💰</div>
+                        <h5>Exclusive Offers</h5>
+                        <p>Unbeatable discounts and festive sales. Sign up to unlock exclusive member-only deals.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="bg-white rounded p-4 h-100 shadow-sm">
+                        <div class="mb-3 fs-1">🛡️</div>
+                        <h5>Secure Payments</h5>
+                        <p>Safe and trusted payment methods for a worry-free shopping experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Happy Customers</h2>
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+                <figure class="text-center m-2 p-4 bg-light rounded shadow-sm" style="max-width: 350px;">
+                    <blockquote class="blockquote">
+                        <p>"MyShop has changed how I shop. Fast delivery and amazing deals every time!"</p>
+                    </blockquote>
+                    <figcaption class="blockquote-footer">Anjali R, Mumbai</figcaption>
+                </figure>
+                <figure class="text-center m-2 p-4 bg-light rounded shadow-sm" style="max-width: 350px;">
+                    <blockquote class="blockquote">
+                        <p>"I got my phone for 20% less than anywhere else. Highly recommended!"</p>
+                    </blockquote>
+                    <figcaption class="blockquote-footer">Rakesh K, Hyderabad</figcaption>
+                </figure>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-5 bg-primary text-white text-center">
+        <div class="container">
+            <h3>Ready to experience smarter shopping?</h3>
+            <p class="mb-4">Join thousands of satisfied customers and start saving today.</p>
+            <a th:href="@{/signup}" class="btn btn-light btn-lg">Sign Up Now</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3">
+        <p class="mb-0">&copy; 2025 MyShop. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS Bundle (includes Popper for dropdowns, nav toggle) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
