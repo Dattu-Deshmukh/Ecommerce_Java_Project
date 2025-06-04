@@ -126,28 +126,28 @@ public class WebController {
         return "myorders"; // myorders.html (to implement backend later)
     }
     
-    @GetMapping("/buy/{id}")
-    public String buyProduct(@PathVariable("id") String productId, HttpSession session, Model model) {
-        // Check if user is logged in
-        User user = (User) session.getAttribute("student");
-        if (user == null) {
-            return "redirect:/login";
-        }
-
-        Optional<Product> productOpt = productService.getProductById(productId);
-        if (productOpt.isPresent()) {
-            Product product = productOpt.get();
-
-            // Simulate placing an order (just show confirmation)
-            model.addAttribute("product", product);
-            model.addAttribute("success", "Order placed successfully!");
-            return "order-confirmation"; // ✅ You must create order-confirmation.html
-        } else {
-            model.addAttribute("error", "Product not found!");
-            return "redirect:/shop";
-        }
-    }
-    
+//    @GetMapping("/buy/{id}")
+//    public String buyProduct(@PathVariable("id") String productId, HttpSession session, Model model) {
+//        // Check if user is logged in
+//        User user = (User) session.getAttribute("student");
+//        if (user == null) {
+//            return "redirect:/login";
+//        }
+//
+//        Optional<Product> productOpt = productService.getProductById(productId);
+//        if (productOpt.isPresent()) {
+//            Product product = productOpt.get();
+//
+//            // Simulate placing an order (just show confirmation)
+//            model.addAttribute("product", product);
+//            model.addAttribute("success", "Order placed successfully!");
+//            return "order-confirmation"; // ✅ You must create order-confirmation.html
+//        } else {
+//            model.addAttribute("error", "Product not found!");
+//            return "redirect:/shop";
+//        }
+//    }
+//    
 //    @Autowired
 //    private ProductRepository productRepository;  // instance, not class name
 //
