@@ -95,7 +95,11 @@ public class WebController {
     
     // 3. Home page
     @GetMapping({"/", "/home"})
-    public String homePage() {
+    public String homePage(Model model, HttpSession session) {
+    	User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
         return "home"; // home.html
     }
 
