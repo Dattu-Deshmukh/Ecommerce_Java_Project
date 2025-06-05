@@ -37,7 +37,7 @@ public class WebController {
         return "signup"; // signup.html
     }
 
-    // Process signup form
+    // signup form post
     @PostMapping("/signup")
     public String signupSubmit(@ModelAttribute(USER2) User user,
                                Model model,
@@ -174,7 +174,6 @@ public class WebController {
         return "profile"; // Your profile.html template
     }
 
-
     // 8. Help page
     @GetMapping("/help")
     public String helpPage(Model model) {
@@ -189,5 +188,4 @@ public class WebController {
         model.addAttribute("successMessage", "Your message has been sent!");
         return "help";  // or redirect if preferred
     }
-
 }
