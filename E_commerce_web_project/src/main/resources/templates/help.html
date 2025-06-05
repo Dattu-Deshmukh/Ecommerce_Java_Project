@@ -139,21 +139,18 @@
             <div class="col-md-8">
                 <div class="card support-card p-4">
                     <h4 class="mb-3 text-center">Need more help? Contact Us</h4>
-                    <form method="post" action="#" th:action="@{/contact}" th:object="${contactForm}">
+                    <form method="get" action="/help">
                         <div class="mb-3">
                             <label for="name" class="form-label">Your Name</label>
-                            <input type="text" class="form-control" id="name" placeholder="Enter your name"
-                                th:field="*{name}" required />
+                            <input type="text" class="form-control" id="name" placeholder="Enter your name" required />
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Your Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="you@example.com"
-                                th:field="*{email}" required />
+                            <input type="email" class="form-control" id="email" placeholder="you@example.com" required />
                         </div>
                         <div class="mb-3">
                             <label for="message" class="form-label">Your Message</label>
-                            <textarea class="form-control" id="message" rows="4" placeholder="Describe your issue..."
-                                th:field="*{message}" required></textarea>
+                            <textarea class="form-control" id="message" rows="4" placeholder="Describe your issue..." required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Submit Request</button>
                     </form>

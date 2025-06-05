@@ -188,4 +188,10 @@ public class WebController {
         model.addAttribute("successMessage", "Your message has been sent!");
         return "help";  // or redirect if preferred
     }
+    
+//    @GetMapping("/contact")
+//    public String contactPage() {
+//        return "help"; // will look for contact.html in /templates/
+//    }
+
 }
