@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 
@@ -22,17 +23,26 @@ public class WebController {
 
     private static final String USER_SESSION_ATTRIBUTE = "user";
 
+    private final BCryptPasswordEncoder passwordEncoder;
+
     @Autowired
     private ProductService productService;
 
     @Autowired
     private UserService userService;
 
+    @Autowired
+    public WebController() {
+        // Ideally inject BCryptPasswordEncoder as a @Bean in a config class and inject here
+        // For simplicity, creating new instance here
+        this.passwordEncoder = new BCryptPasswordEncoder();
+    }
+
     // 1. Signup form GET
     @GetMapping("/signup")
     public String signupForm(Model model) {
         model.addAttribute(USER_SESSION_ATTRIBUTE, new User());
-        return "signup"; // signup.html
+        return "signup"; // signup.html template
     }
 
     // 1. Signup form POST
@@ -41,7 +51,7 @@ public class WebController {
                                Model model,
                                HttpSession session) {
 
-        // Safely check password matching with null checks
+        // Null-safe check for matching passwords
         if (user.getPassword() == null || !user.getPassword().equals(user.getConfirmPassword())) {
             model.addAttribute("error", "Passwords do not match");
             return "signup";
@@ -53,19 +63,18 @@ public class WebController {
             return "signup";
         }
 
-        // Save user (make sure password is hashed inside userService.saveUser)
+        // Save user; password should be hashed inside userService.saveUser
         userService.saveUser(user);
 
         // Redirect to login page after successful signup
         return "redirect:/login";
     }
 
-
     // 2. Show login form
     @GetMapping("/login")
     public String loginForm(Model model) {
         model.addAttribute(USER_SESSION_ATTRIBUTE, new User()); // consistent model attribute name
-        return "login";
+        return "login";  // login.html template
     }
 
     // 3. Handle login form submission
@@ -80,12 +89,14 @@ public class WebController {
         if (userOpt.isPresent()) {
             User foundUser = userOpt.get();
 
-            // NOTE: Password comparison should use password hashing (e.g., BCrypt)
-            // Example (if passwords are hashed):
-            // if (passwordEncoder.matches(user.getPassword(), foundUser.getPassword())) { ... }
+            String rawPassword = user.getPassword();
+            String encodedPassword = foundUser.getPassword();
 
-            // Currently assuming plaintext for explanation:
-            if (foundUser.getPassword().equals(user.getPassword())) {
+            // Use BCryptPasswordEncoder to verify password hash
+            if (rawPassword != null && encodedPassword != null &&
+                passwordEncoder.matches(rawPassword, encodedPassword)) {
+
+                // Set authenticated user in session
                 session.setAttribute(USER_SESSION_ATTRIBUTE, foundUser);
                 return "redirect:/home";
             }
@@ -109,7 +120,7 @@ public class WebController {
         if (user == null) {
             return "redirect:/login";
         }
-        return "home"; // home.html
+        return "home"; // home.html template
     }
 
     // 6. Shop page - display product list
@@ -117,14 +128,14 @@ public class WebController {
     public String shop(Model model) {
         List<Product> products = productService.getAllProducts();
         model.addAttribute("products", products);
-        return "shop"; // shop.html
+        return "shop"; // shop.html template
     }
 
     // 7. Sell page - GET for product form
     @GetMapping("/sell")
     public String showSellForm(Model model) {
         model.addAttribute("product", new Product());
-        return "sell"; // sell.html
+        return "sell"; // sell.html template
     }
 
     // 7. Sell page - POST to add new product
@@ -138,7 +149,7 @@ public class WebController {
     @GetMapping("/myorders")
     public String ordersPage() {
         // Backend implementation pending
-        return "myorders"; // myorders.html
+        return "myorders"; // myorders.html template
     }
 
     // 9. Profile page - shows user details, only if logged in
@@ -149,20 +160,21 @@ public class WebController {
             return "redirect:/login";
         }
         model.addAttribute("user", user);
-        return "profile"; // profile.html
+        return "profile"; // profile.html template
     }
 
     // 10. Help page GET
     @GetMapping("/help")
     public String helpPage(Model model) {
         model.addAttribute("contactForm", new ContactForm());
-        return "help"; // help.html
+        return "help"; // help.html template
     }
 
     // 10. Help page POST - process contact form submission
     @PostMapping("/help")
     public String submitHelpForm(@ModelAttribute ContactForm contactForm, Model model) {
         // Process contactForm data (e.g., save to DB, send email, etc.)
+        // TODO: add saving or mailing logic here
 
         model.addAttribute("successMessage", "Your message has been sent!");
         return "help";  // reload help page with success message
