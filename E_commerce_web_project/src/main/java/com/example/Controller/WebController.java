@@ -41,8 +41,8 @@ public class WebController {
                                Model model,
                                HttpSession session) {
 
-        // Check if passwords match
-        if (!user.getPassword().equals(user.getConfirmPassword())) {
+        // Safely check password matching with null checks
+        if (user.getPassword() == null || !user.getPassword().equals(user.getConfirmPassword())) {
             model.addAttribute("error", "Passwords do not match");
             return "signup";
         }
@@ -53,12 +53,13 @@ public class WebController {
             return "signup";
         }
 
-        // Save user (recommend hashing password before this step in userService)
+        // Save user (make sure password is hashed inside userService.saveUser)
         userService.saveUser(user);
 
         // Redirect to login page after successful signup
         return "redirect:/login";
     }
+
 
     // 2. Show login form
     @GetMapping("/login")
