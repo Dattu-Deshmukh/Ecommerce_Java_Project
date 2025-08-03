@@ -1,69 +1,126 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Shop - Merchant</title>
+    <title>Shop - MyShop</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <style>
-        .product-card img {
-            height: 200px;
-            object-fit: cover;
-        }
-
-        body {
-            background-color: #f8f9fa;
-        }
-    </style>
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Custom stylesheet -->
+    <link th:href="@{/style.css}" rel="stylesheet" />
 </head>
 
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <!-- Navbar (same as dashboard for consistency) -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
         <div class="container">
-            <a class="navbar-brand" th:href="@{/}">Merchant</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <a class="navbar-brand" th:href="@{/home}">MyShop</a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavShop"
+                aria-controls="navbarNavShop"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="collapse navbar-collapse" id="navbarNavShop">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link text-white" th:href="@{/home}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/shop}">Shop</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/sell}">Sell</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/myorders}">Orders</a></li>
-                </ul>
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link text-white active" aria-current="page" href="#">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/cart}">Cart</a></li>
                     <li class="nav-item"><a class="nav-link text-white" th:href="@{/profile}">Profile</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/logout}">Logout</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/help}">Help</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
+    <!-- Page Header -->
+    <section class="pt-4 pb-3 bg-light">
+        <div class="container">
+            <h1 class="h3 mb-3">Shop Products</h1>
+            <!-- Search and Filter Row -->
+            <form class="row g-3 align-items-center" th:action="@{/shop}" method="get">
+                <div class="col-md-6">
+                    <input
+                        type="search"
+                        class="form-control"
+                        name="search"
+                        placeholder="Search products..."
+                        th:value="${param.search}"
+                        aria-label="Search products"
+                    />
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select" name="category" aria-label="Filter by category">
+                        <option value="" th:selected="${param.category == null || param.category == ''}">All Categories</option>
+                        <option value="electronics" th:selected="${param.category == 'electronics'}">Electronics</option>
+                        <option value="fashion" th:selected="${param.category == 'fashion'}">Fashion</option>
+                        <option value="books" th:selected="${param.category == 'books'}">Books</option>
+                        <!-- Add your categories as needed -->
+                    </select>
+                </div>
+                <div class="col-md-2 d-grid">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
     <!-- Products Grid -->
-    <div class="container my-5">
-        <h2 class="text-center mb-4">Our Products</h2>
+    <section class="container py-4">
         <div class="row g-4">
-            <!-- Dynamic product cards -->
+            <!-- Example product card - to be iterated dynamically -->
             <div class="col-sm-6 col-md-4 col-lg-3" th:each="product : ${products}">
-                <div class="card product-card shadow-sm">
-                    <!-- <img th:src="${product.imageUrl}" th:alt="${product.productName}" class="card-img-top" /> -->
-                    <div class="card-body">
+                <div class="card h-100 shadow-sm">
+                    <img
+                        th:src="@{${product.imageUrl}}" 
+                        alt="Product Image"
+                        class="card-img-top"
+                        style="height:200px; object-fit:contain"
+                    />
+                    <div class="card-body d-flex flex-column">
                         <h5 class="card-title" th:text="${product.name}">Product Name</h5>
-                        <p class="card-text text-muted" th:text="'₹' + ${product.price}">Price</p>
-                        <p class="card-text" th:text="${product.description}">Description</p>
-                        <!-- Buy Now button linking to /buy/{productId} -->
-                        <a th:href="@{/shop}" class="btn btn-primary w-100">Buy Now</a>
+                        <p class="card-text text-muted mb-2">₹<span th:text="${product.price}">0</span></p>
+                        <p>
+                            <span 
+                                class="badge"
+                                th:classappend="${product.inStock} ? 'bg-success' : 'bg-danger'"
+                                th:text="${product.inStock} ? 'In Stock' : 'Out of Stock'">
+                                In Stock
+                            </span>
+                        </p>
+                        <a
+                            th:href="@{/products/{id}(id=${product.id})}"
+                            class="btn btn-primary mt-auto"
+                            th:if="${product.inStock}"
+                        >
+                            View Details
+                        </a>
+                        <button class="btn btn-secondary mt-auto" disabled th:if="${!product.inStock}">
+                            Sold Out
+                        </button>
                     </div>
                 </div>
             </div>
-            <!-- End product loop -->
-        </div>
-    </div>
 
-    <!-- Bootstrap JS -->
+            <!-- If no products -->
+            <div class="col-12" th:if="${#lists.isEmpty(products)}">
+                <p class="lead text-center">No products found.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+        <p class="mb-0">&copy; 2025 MyShop. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

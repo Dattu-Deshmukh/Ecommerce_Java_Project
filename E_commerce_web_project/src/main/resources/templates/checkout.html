@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Checkout - MyShop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <link th:href="@{/style.css}" rel="stylesheet" />
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/home}">MyShop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavCheckout" aria-controls="navbarNavCheckout" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavCheckout">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/home}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/shop}">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/cart}">Cart</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="container py-5">
+        <h1 class="mb-4">Checkout</h1>
+        <div class="row">
+            <!-- Shipping / Contact Form -->
+            <div class="col-md-6">
+                <form th:action="@{/checkout}" method="post" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" class="form-control" required />
+                        <div class="invalid-feedback">Please enter your name.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" required />
+                        <div class="invalid-feedback">Enter a valid email.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Shipping Address</label>
+                        <textarea id="address" name="address" class="form-control" rows="3" required></textarea>
+                        <div class="invalid-feedback">Please provide your address.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" required pattern="\d{10}" maxlength="10"/>
+                        <div class="invalid-feedback">Enter a valid 10-digit phone number.</div>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-lg mt-3">Place Order</button>
+                </form>
+            </div>
+            <!-- Order Summary -->
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        Order Summary
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" th:each="item : ${cartItems}">
+                            <div class="d-flex justify-content-between">
+                                <span>
+                                    <strong th:text="${item.product.name}">Product</strong> ×
+                                    <span th:text="${item.quantity}">1</span>
+                                </span>
+                                <span>₹<span th:text="${item.product.price * item.quantity}">0</span></span>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span><strong>Total</strong></span>
+                            <span class="fw-bold text-success">₹<span th:text="${#numbers.formatDecimal(totalAmount, 1, 'COMMA', 2, 'POINT')}">0.00</span></span>
+                        </li>
+                    </ul>
+                </div>
+                <a th:href="@{/cart}" class="btn btn-link mt-3">Back to Cart</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+        <p class="mb-0">&copy; 2025 MyShop. All rights reserved.</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Bootstrap form validation
+        (() => {
+          'use strict';
+          const forms = document.querySelectorAll('.needs-validation');
+          Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+              if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+              form.classList.add('was-validated');
+            }, false);
+          });
+        })();
+    </script>
+</body>
+</html>

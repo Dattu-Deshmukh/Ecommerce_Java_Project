@@ -14,30 +14,33 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
 import java.util.List;
+
 @Controller
 public class WebController {
 
-    private static final String USER2 = "user";
+    private static final String USER_SESSION_ATTRIBUTE = "user";
 
-	@Autowired
+    @Autowired
     private ProductService productService;
-    
+
     @Autowired
     private UserService userService;
-    
-    // Signup form GET
+
+    // 1. Signup form GET
     @GetMapping("/signup")
     public String signupForm(Model model) {
-        model.addAttribute(USER2, new User());
+        model.addAttribute(USER_SESSION_ATTRIBUTE, new User());
         return "signup"; // signup.html
     }
 
-    // signup form post
+    // 1. Signup form POST
     @PostMapping("/signup")
-    public String signupSubmit(@ModelAttribute(USER2) User user,
+    public String signupSubmit(@ModelAttribute(USER_SESSION_ATTRIBUTE) User user,
                                Model model,
                                HttpSession session) {
+
         // Check if passwords match
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             model.addAttribute("error", "Passwords do not match");
@@ -50,56 +53,65 @@ public class WebController {
             return "signup";
         }
 
-        // Save user
+        // Save user (recommend hashing password before this step in userService)
         userService.saveUser(user);
 
         // Redirect to login page after successful signup
         return "redirect:/login";
     }
 
-    // Show login form
+    // 2. Show login form
     @GetMapping("/login")
     public String loginForm(Model model) {
-        model.addAttribute("user", new User()); // Add this line
+        model.addAttribute(USER_SESSION_ATTRIBUTE, new User()); // consistent model attribute name
         return "login";
     }
 
-
-    // Handle login form submission
+    // 3. Handle login form submission
     @PostMapping("/login")
-    public String processLogin(@ModelAttribute("user") User user,
+    public String processLogin(@ModelAttribute(USER_SESSION_ATTRIBUTE) User user,
                                Model model,
                                HttpSession session) {
 
-        var users = userService.findByEmail(user.getEmail());
-        if (users.isPresent() && users.get().getPassword().equals(user.getPassword())) {
-            session.setAttribute("user", users.get());
-            return "redirect:/home";	
+        // Find user by email
+        var userOpt = userService.findByEmail(user.getEmail());
+
+        if (userOpt.isPresent()) {
+            User foundUser = userOpt.get();
+
+            // NOTE: Password comparison should use password hashing (e.g., BCrypt)
+            // Example (if passwords are hashed):
+            // if (passwordEncoder.matches(user.getPassword(), foundUser.getPassword())) { ... }
+
+            // Currently assuming plaintext for explanation:
+            if (foundUser.getPassword().equals(user.getPassword())) {
+                session.setAttribute(USER_SESSION_ATTRIBUTE, foundUser);
+                return "redirect:/home";
+            }
         }
 
         model.addAttribute("error", "Invalid username or password");
         return "login";
     }
 
-
-    
+    // 4. Logout and invalidate session
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate();  // ✅ clear the session
-        return "redirect:/login";  // Redirect to login
+        session.invalidate();  // clears all session attributes
+        return "redirect:/login";  // Redirect to login page
     }
-    
-    // 3. Home page
+
+    // 5. Home page – accessible only if logged in
     @GetMapping({"/", "/home"})
     public String homePage(Model model, HttpSession session) {
-    	User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute(USER_SESSION_ATTRIBUTE);
         if (user == null) {
             return "redirect:/login";
         }
         return "home"; // home.html
     }
 
-    // 4. Shop page - pass product list
+    // 6. Shop page - display product list
     @GetMapping("/shop")
     public String shop(Model model) {
         List<Product> products = productService.getAllProducts();
@@ -107,91 +119,51 @@ public class WebController {
         return "shop"; // shop.html
     }
 
-    // 5. Sell page - GET for form, POST to save product
+    // 7. Sell page - GET for product form
     @GetMapping("/sell")
     public String showSellForm(Model model) {
-        model.addAttribute("product", new Product()); // Product is your form backing object
-        return "sell"; // returns sell.html view
+        model.addAttribute("product", new Product());
+        return "sell"; // sell.html
     }
 
+    // 7. Sell page - POST to add new product
     @PostMapping("/sell")
     public String addProduct(@ModelAttribute Product product) {
         productService.saveProduct(product);
-        return "redirect:/shop";  // Redirect to shop after adding product
+        return "redirect:/shop"; // redirect to shop after adding
     }
 
-    // 6. My Orders page
+    // 8. My Orders page placeholder
     @GetMapping("/myorders")
     public String ordersPage() {
-        return "myorders"; // myorders.html (to implement backend later)
+        // Backend implementation pending
+        return "myorders"; // myorders.html
     }
-    
-//    @GetMapping("/buy/{id}")
-//    public String buyProduct(@PathVariable("id") String productId, HttpSession session, Model model) {
-//        // Check if user is logged in
-//        User user = (User) session.getAttribute("student");
-//        if (user == null) {
-//            return "redirect:/login";
-//        }
-//
-//        Optional<Product> productOpt = productService.getProductById(productId);
-//        if (productOpt.isPresent()) {
-//            Product product = productOpt.get();
-//
-//            // Simulate placing an order (just show confirmation)
-//            model.addAttribute("product", product);
-//            model.addAttribute("success", "Order placed successfully!");
-//            return "order-confirmation"; // ✅ You must create order-confirmation.html
-//        } else {
-//            model.addAttribute("error", "Product not found!");
-//            return "redirect:/shop";
-//        }
-//    }
-//    
-//    @Autowired
-//    private ProductRepository productRepository;  // instance, not class name
-//
-//    @GetMapping("/buyNow")
-//    public String buyNow(@RequestParam("productId") String productId, Model model) {
-//        Product products = productRepository.findById(productId).orElse(null);
-//        if (products == null) {
-//            // handle product not found
-//            return "errorPage";
-//        }
-//        model.addAttribute("products", products);
-//        return "order-confirmation";
-//    }
 
-
-    // 7. Profile page
+    // 9. Profile page - shows user details, only if logged in
     @GetMapping("/profile")
     public String showProfile(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute(USER_SESSION_ATTRIBUTE);
         if (user == null) {
             return "redirect:/login";
         }
         model.addAttribute("user", user);
-        return "profile"; // Your profile.html template
+        return "profile"; // profile.html
     }
 
-    // 8. Help page
+    // 10. Help page GET
     @GetMapping("/help")
     public String helpPage(Model model) {
         model.addAttribute("contactForm", new ContactForm());
-        return "help";
+        return "help"; // help.html
     }
-    
+
+    // 10. Help page POST - process contact form submission
     @PostMapping("/help")
     public String submitHelpForm(@ModelAttribute ContactForm contactForm, Model model) {
-    	
-        // Process contactForm data (send email, save, etc.)
-        model.addAttribute("successMessage", "Your message has been sent!");
-        return "help";  // or redirect if preferred
-    }
-    
-//    @GetMapping("/contact")
-//    public String contactPage() {
-//        return "help"; // will look for contact.html in /templates/
-//    }
+        // Process contactForm data (e.g., save to DB, send email, etc.)
 
+        model.addAttribute("successMessage", "Your message has been sent!");
+        return "help";  // reload help page with success message
+    }
 }

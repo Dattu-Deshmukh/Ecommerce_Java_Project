@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Shopping Cart - MyShop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Custom stylesheet -->
+    <link th:href="@{/style.css}" rel="stylesheet" />
+</head>
+<body>
+    <!-- Navbar (consistent) -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/home}">MyShop</a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavCart"
+                aria-controls="navbarNavCart"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavCart">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/home}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/shop}">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link text-white active" aria-current="page" href="#">Cart</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="container py-5">
+        <h1 class="mb-4">Your Shopping Cart</h1>
+
+        <div th:if="${#lists.isEmpty(cartItems)}">
+            <p class="lead">Your cart is empty.</p>
+            <a th:href="@{/shop}" class="btn btn-primary">Continue Shopping</a>
+        </div>
+
+        <form th:if="${!#lists.isEmpty(cartItems)}" th:action="@{/cart/update}" method="post">
+
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th style="width: 120px;">Quantity</th>
+                            <th>Subtotal</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${cartItems}">
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img
+                                        th:src="@{${item.product.imageUrl}}"
+                                        alt="[[${item.product.name}]]"
+                                        class="img-thumbnail me-3"
+                                        style="width: 80px; height: 80px; object-fit: contain;"
+                                    />
+                                    <span th:text="${item.product.name}">Product Name</span>
+                                </div>
+                            </td>
+                            <td>₹<span th:text="${item.product.price}">0</span></td>
+                            <td>
+                                <input
+                                    type="number"
+                                    name="quantities"
+                                    min="1"
+                                    max="10"
+                                    th:value="${item.quantity}"
+                                    class="form-control"
+                                    style="max-width: 80px;"
+                                    required
+                                />
+                                <!-- Hidden input to identify the product -->
+                                <input type="hidden" name="productIds" th:value="${item.product.id}" />
+                            </td>
+                            <td>₹<span th:text="${#numbers.formatDecimal(item.product.price * item.quantity, 1, 'COMMA', 2, 'POINT')}">0.00</span></td>
+                            <td>
+                                <a th:href="@{/cart/remove/{id}(id=${item.product.id})}" class="btn btn-sm btn-danger" title="Remove">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center">
+                <h4>Total: ₹<span th:text="${#numbers.formatDecimal(totalAmount, 1, 'COMMA', 2, 'POINT')}">0.00</span></h4>
+                <div>
+                    <button type="submit" class="btn btn-primary me-2">Update Cart</button>
+                    <a th:href="@{/checkout}" class="btn btn-success">Proceed to Checkout</a>
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+        <p class="mb-0">&copy; 2025 MyShop. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,171 +1,147 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Help & Support - MyShop</title>
+    <title>Help & Support – MyShop</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <style>
-        .hero {
-            background: linear-gradient(to right, #0d6efd, #6f42c1);
-            color: white;
-            padding: 5rem 1rem;
-            text-align: center;
-        }
-
-        .accordion-button:not(.collapsed) {
-            background-color: #e9ecef;
-        }
-
-        .support-card {
-            background-color: #f8f9fa;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            border: none;
-        }
-
-        .contact-icon {
-            font-size: 2rem;
-            color: #0d6efd;
-        }
-    </style>
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <link th:href="@{/style.css}" rel="stylesheet" />
 </head>
-
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" th:href="@{/home}">Merchant</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/home}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/shop}">Shop</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/sell}">Sell</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/myorders}">Orders</a></li>
-                </ul>
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/profile}">Profile</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/logout}">Logout</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/help}">Help</a></li>
-                </ul>
-            </div>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/home}">MyShop</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavHelp" aria-controls="navbarNavHelp" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavHelp">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link text-white" th:href="@{/home}">Home</a></li>
+                <li class="nav-item"><a class="nav-link text-white" th:href="@{/shop}">Shop</a></li>
+                <li class="nav-item"><a class="nav-link text-white" th:href="@{/cart}">Cart</a></li>
+                <li class="nav-item"><a class="nav-link text-white" th:href="@{/profile}">Profile</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Help</a></li>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1 class="display-4">Help & Support</h1>
-            <p class="lead">We're here to help! Browse FAQs or contact us for personal assistance.</p>
-        </div>
-    </section>
+<!-- Main Content -->
+<section class="container py-5">
+    <h1 class="mb-4 text-center">Help & Support</h1>
 
-    <!-- FAQ Section -->
-    <section class="container py-5">
-        <h2 class="mb-4 text-center">Frequently Asked Questions</h2>
-        <div class="accordion" id="faqAccordion">
-
-            <div class="accordion-item mb-3">
-                <h2 class="accordion-header" id="q1">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#a1"
-                        aria-expanded="true" aria-controls="a1">
-                        How do I track my order?
-                    </button>
-                </h2>
-                <div id="a1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"
-                    aria-labelledby="q1">
-                    <div class="accordion-body">
-                        You can track your order from the "Orders" section in your profile. Real-time tracking is
-                        available for shipped items.
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item mb-3">
-                <h2 class="accordion-header" id="q2">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#a2" aria-expanded="false" aria-controls="a2">
-                        What is the return policy?
-                    </button>
-                </h2>
-                <div id="a2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion" aria-labelledby="q2">
-                    <div class="accordion-body">
-                        Most items can be returned within 7 days of delivery. Visit the "Returns" section to initiate a
-                        return.
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item mb-3">
-                <h2 class="accordion-header" id="q3">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#a3" aria-expanded="false" aria-controls="a3">
-                        How can I contact customer support?
-                    </button>
-                </h2>
-                <div id="a3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion" aria-labelledby="q3">
-                    <div class="accordion-body">
-                        You can contact our support team using the form below or via live chat 24/7.
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item mb-3">
-                <h2 class="accordion-header" id="q4">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#a4" aria-expanded="false" aria-controls="a4">
-                        Can I cancel my order after placing it?
-                    </button>
-                </h2>
-                <div id="a4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion" aria-labelledby="q4">
-                    <div class="accordion-body">
-                        Yes, you can cancel your order before it is shipped from the "Orders" tab in your account.
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- Contact Support Card -->
-    <section class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card support-card p-4">
-                    <h4 class="mb-3 text-center">Need more help? Contact Us</h4>
-                    <form method="get" action="/help">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Your Name</label>
-                            <input type="text" class="form-control" id="name" placeholder="Enter your name" required />
+    <div class="row">
+        <!-- FAQ Section -->
+        <div class="col-lg-8 mx-auto">
+            <h3 class="mb-3">Frequently Asked Questions</h3>
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faqHeadingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqOne" aria-expanded="true" aria-controls="faqOne">
+                            How do I track my order?
+                        </button>
+                    </h2>
+                    <div id="faqOne" class="accordion-collapse collapse show" aria-labelledby="faqHeadingOne" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            You can track your order status from your <a th:href="@{/orders}">Order History</a> page by clicking on the respective order details.
                         </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Your Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="you@example.com" required />
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faqHeadingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqTwo" aria-expanded="false" aria-controls="faqTwo">
+                            What is the return policy?
+                        </button>
+                    </h2>
+                    <div id="faqTwo" class="accordion-collapse collapse" aria-labelledby="faqHeadingTwo" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            We accept returns within 15 days of delivery. Products must be in original condition and packaging. Please contact our support for returning items.
                         </div>
-                        <div class="mb-3">
-                            <label for="message" class="form-label">Your Message</label>
-                            <textarea class="form-control" id="message" rows="4" placeholder="Describe your issue..." required></textarea>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faqHeadingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqThree" aria-expanded="false" aria-controls="faqThree">
+                            How can I contact customer service?
+                        </button>
+                    </h2>
+                    <div id="faqThree" class="accordion-collapse collapse" aria-labelledby="faqHeadingThree" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            You can reach out to us via email at <a href="mailto:support@myshop.com">support@myshop.com</a> or call us at +1-800-123-4567. We aim to respond within 24 hours.
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Submit Request</button>
-                    </form>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faqHeadingFour">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqFour" aria-expanded="false" aria-controls="faqFour">
+                            What payment methods do you accept?
+                        </button>
+                    </h2>
+                    <div id="faqFour" class="accordion-collapse collapse" aria-labelledby="faqHeadingFour" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            We accept all major credit/debit cards, net banking, UPI, and popular digital wallets.
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-3">
-        <p class="mb-0">&copy; 2025 MyShop. All rights reserved.</p>
-    </footer>
+    <!-- Contact Form Section -->
+    <div class="row mt-5">
+        <div class="col-lg-8 mx-auto">
+            <h3 class="mb-3">Contact Us</h3>
+            <form th:action="@{/help/contact}" method="post" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Your Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required />
+                    <div class="invalid-feedback">Please enter your name.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="emailContact" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="emailContact" name="email" required />
+                    <div class="invalid-feedback">Please enter a valid email.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="message" class="form-label">Your Message</label>
+                    <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                    <div class="invalid-feedback">Please enter your message.</div>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+    </div>
+</section>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-3 mt-5">
+    <p class="mb-0">&copy; 2025 MyShop. All rights reserved.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    (() => {
+      'use strict'
+      const forms = document.querySelectorAll('.needs-validation')
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+</script>
+
 </body>
-
 </html>
