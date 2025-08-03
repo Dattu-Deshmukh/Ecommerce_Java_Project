@@ -2,9 +2,11 @@ package com.example.Repository;
 
 import java.util.List;
 
+import org.springframework.data.mongodb.repository.MongoRepository;
+
 import com.example.Entity.ContactForm;
 
-public interface ContactFormRepository {
+public interface ContactFormRepository extends MongoRepository<ContactForm, String>{
 
 	ContactForm save(ContactForm contactForm);
 
