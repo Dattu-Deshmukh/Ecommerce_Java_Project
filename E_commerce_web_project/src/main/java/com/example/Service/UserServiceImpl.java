@@ -12,13 +12,13 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository userRepo; // Fixed name
+    private UserRepository userRepo;
 
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public User saveUser(User user) {
-        // Hash password before saving
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepo.save(user);
     }

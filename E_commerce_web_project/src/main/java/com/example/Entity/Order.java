@@ -12,24 +12,20 @@ public class Order {
     @Id
     private String id;
 
-    private String userId;  // user who placed order
+    private String userId;
 
-    private List<OrderItem> items;  // see OrderItem below
+    private List<OrderItem> items;
 
     private double totalAmount;
 
-    private String status; // e.g., PLACED, CANCELLED, DELIVERED
+    private String status;
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    private String shippingAddress;
+    // Shipping info, etc.
 
-    public Order() {}
+    // Getters and setters
 
-    // Getters and setters...
-
-    // ... id, userId, items, totalAmount, status, createdAt, shippingAddress ...
-    
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
@@ -47,7 +43,4 @@ public class Order {
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-
-    public String getShippingAddress() { return shippingAddress; }
-    public void setShippingAddress(String shippingAddress) { this.shippingAddress = shippingAddress; }
 }

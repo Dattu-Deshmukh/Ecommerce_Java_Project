@@ -3,7 +3,6 @@ package com.example.Entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
-import java.time.LocalDateTime;
 
 @Document(collection = "users")
 public class User {
@@ -15,22 +14,16 @@ public class User {
 
     private String email;
 
-    private String password;  // store hashed password only
+    private String password;
 
-    private String role = "USER";  // role for authorization
+    private String role = "USER";
 
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    private String fullName;
-
-    private String avatarUrl;  // optional profile image url
-    
-    @Transient // import org.springframework.data.annotation.Transient
+    @Transient
     private String confirmPassword;
-    
-    public User() {}
 
-    // Getters and setters below
+    // Other fields, e.g., createdAt, fullName...
+
+    // Getters and Setters
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
@@ -47,21 +40,8 @@ public class User {
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public String getConfirmPassword() { return confirmPassword; }
+    public void setConfirmPassword(String confirmPassword) { this.confirmPassword = confirmPassword; }
 
-    public String getFullName() { return fullName; }
-    public void setFullName(String fullName) { this.fullName = fullName; }
-
-    public String getAvatarUrl() { return avatarUrl; }
-    public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
-    
- // Getter
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-    // Setter
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
+    // Add other getters and setters as needed
 }
